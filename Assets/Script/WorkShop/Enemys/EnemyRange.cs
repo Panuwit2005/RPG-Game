@@ -10,7 +10,7 @@ public class EnemyRange : Enemy
         if (Player == null || Player.isInvisible)
         {
             animator.SetBool("Attack", false);
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
             return;
         }
 
@@ -26,7 +26,7 @@ public class EnemyRange : Enemy
         }
         else
         {
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
             animator.SetFloat("Speed", 0);
         }
 

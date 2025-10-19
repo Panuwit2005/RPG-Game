@@ -40,7 +40,7 @@ public class Pet : Enemy
 
         {
 
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
 
             animator.SetBool("Walk", false);
 
@@ -101,7 +101,7 @@ public class Pet : Enemy
 
             {
 
-                rb.velocity = Vector3.zero;
+                rb.linearVelocity = Vector3.zero;
 
                 animator.SetBool("Walk", false);
 

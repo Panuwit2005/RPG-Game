@@ -31,7 +31,7 @@ public class InteractableItem : Items, IHasInteractionUI
 
         if (player == null)
         {
-            player = FindObjectOfType<Player>();
+            player = FindFirstObjectByType<Player>();
             if (player == null) return;
         }
 

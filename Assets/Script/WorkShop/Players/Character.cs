@@ -60,12 +60,12 @@ public class Character : Identity
     {
         transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * 15f);
 
-        if (rb.velocity.magnitude < 0.1f || direction == Vector3.zero) return;
+        if (rb.linearVelocity.magnitude < 0.1f || direction == Vector3.zero) return;
         newRotation = Quaternion.LookRotation(direction);
     }
     protected virtual void Move(Vector3 direction)
     {
-        rb.velocity = new Vector3(direction.x * movementSpeed, rb.velocity.y, direction.z * movementSpeed);
-        animator.SetFloat("Speed", rb.velocity.magnitude);
+        rb.linearVelocity = new Vector3(direction.x * movementSpeed, rb.linearVelocity.y, direction.z * movementSpeed);
+        animator.SetFloat("Speed", rb.linearVelocity.magnitude);
     }
 }

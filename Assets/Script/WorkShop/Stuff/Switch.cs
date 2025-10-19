@@ -7,9 +7,9 @@ public class Switch : Stuff
     public Switch() { 
         Name = "Switch";
     }
-    public bool isInteractable { get => CanUse; set => CanUse = value; }
+    public bool isInteractable { get => canUse; set => canUse = value; }
     [SerializeField]
-    bool isOn = false;
+    //bool isOn = false;
     Animator animator;
     public Identity InteracTo;
 }
