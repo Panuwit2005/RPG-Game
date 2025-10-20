@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class KinematicBox : Stuff, IInteractable
 {
-    public bool IsInteractable { get; set; } = true; // สามารถ interact ได้
+    public bool isInteractable { get; set; } = true; // สามารถ interact ได้
     private Rigidbody rb;
 
     private void Awake()
@@ -16,7 +16,7 @@ public class KinematicBox : Stuff, IInteractable
 
     public void Interact(Player player)
     {
-        if (IsInteractable = false || rb == null) return;
+        if (isInteractable = false || rb == null) return;
 
         // สลับค่า isKinematic
         rb.isKinematic = !rb.isKinematic;

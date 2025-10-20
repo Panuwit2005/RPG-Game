@@ -19,24 +19,28 @@ public class Player : Character
     [SerializeField] private float attackRange = 2f;
     [SerializeField] private float attackRadius = 0.5f;
 
-    Vector3 _inputDirection;
-    bool _isAttacking = false;
+    private Vector3 _inputDirection;
+    private bool _isAttacking = false;
 
     public bool isInvisible = false;
 
-    void Start()
+    // ให้ Character รู้ว่า player มีโล่ไหม
+    protected override bool HasShield => shield != null && shield.activeInHierarchy;
+
+    protected override void Start()
     {
+        base.Start();
         SetUp();
         Debug.Log($"Player HP: {Health}/{maxHealth}");
     }
 
-    public void FixedUpdate()
+    private void FixedUpdate()
     {
         Move(_inputDirection);
         Turn(_inputDirection);
     }
 
-    public void Update()
+    private void Update()
     {
         HandleInput();
         HandleWeaponToggle();
@@ -49,10 +53,9 @@ public class Player : Character
         float y = Input.GetAxis("Vertical");
 
         _inputDirection = new Vector3(x, 0, y);
+
         if (Input.GetMouseButtonDown(0))
-        {
             _isAttacking = true;
-        }
     }
 
     public void Attack(bool isAttacking)
@@ -75,35 +78,60 @@ public class Player : Character
         _isAttacking = false;
     }
 
-    public void AddItem(Items item)
-    {
-        inventory.Add(item);
-    }
+    public void AddItem(Items item) => inventory.Add(item);
 
-    public void Coin(int amount)
-    {
-        score += amount;
-    }
+    public void Coin(int amount) => score += amount;
 
-    void HandleWeaponToggle()
+    // ✅ ระบบกด H / J
+    private void HandleWeaponToggle()
     {
+        // -----------------
+        // 🔹 ปุ่ม H: สลับโล่
+        // -----------------
         if (Input.GetKeyDown(KeyCode.H))
         {
-            if (sword != null && shield != null)
+            if (shield != null)
             {
-                bool isActive = !sword.activeSelf;
-                sword.SetActive(isActive);
+                bool isActive = !shield.activeSelf;
                 shield.SetActive(isActive);
 
                 if (isActive)
                 {
-                    Debug.Log("Draw Weapon");
-                    Damage += 25;
+                    Debug.Log("🛡️ Draw Shield");
+                    Defense += 10; // เพิ่มเกราะเมื่อถือโล่
                 }
                 else
                 {
-                    Debug.Log("Sheath Weapon");
-                    Damage -= 25;
+                    Debug.Log("🛡️ Hide Shield");
+                    Defense = Mathf.Max(0, Defense - 10); // เอาโล่ลง ลดเกราะกลับ
+                }
+            }
+        }
+
+        // -----------------
+        // 🔹 ปุ่ม J: สลับดาบ
+        // -----------------
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            if (sword != null)
+            {
+                bool isActive = !sword.activeSelf;
+                sword.SetActive(isActive);
+
+                Sword swordComp = sword.GetComponent<Sword>();
+
+                if (swordComp != null)
+                {
+                    if (isActive)
+                    {
+                        Debug.Log("⚔️ Draw Sword");
+                        Damage += swordComp.damage; // เพิ่มดาเมจตามค่าดาบ
+                    }
+                    else
+                    {
+                        Debug.Log("👊 Use Fist");
+                        Damage = Mathf.Max(10, Damage - swordComp.damage); // กลับไปใช้หมัด
+                    }
                 }
             }
         }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Box : Stuff, IInteractable
 {
-    public bool IsInteractable { get => canUse; set => canUse = value; }
+    public bool isInteractable { get => canUse; set => canUse = value; }
     public GameObject crate;
     public GameObject objectToShow;
 
@@ -19,13 +19,13 @@ public class Box : Stuff, IInteractable
 
     public void Interact(Player player)
     {
-        if (IsInteractable == false)
+        if (isInteractable == false)
         {
             return;
         }
         _collider.enabled = false;
         crate.gameObject.SetActive(false);
-        IsInteractable = false;
+        isInteractable = false;
         Debug.Log("Breaking crate");
 
         if (objectToShow != null)

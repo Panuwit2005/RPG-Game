@@ -1,36 +1,47 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using static UnityEditor.Progress;
 
 [RequireComponent(typeof(SphereCollider))]
-public class Items : MonoBehaviour
+public class Items : Identity
 {
-    public string itemName;
     protected Player player;
     protected Collider _collider;
 
-    protected virtual void Start()
+    public override void SetUp()
     {
+        base.SetUp();
         _collider = GetComponent<Collider>();
-        _collider.isTrigger = true;
+        if (_collider != null)
+            _collider.isTrigger = true;
+    }
+
+    private void Reset()
+    {
+        var sphere = GetComponent<SphereCollider>();
+        if (sphere != null)
+        {
+            sphere.isTrigger = true;
+            sphere.radius = 1.0f;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")
-        {
+        if (!other.CompareTag("Player")) return;
+
+        if (player == null)
             player = other.GetComponent<Player>();
-            Oncollect(player);
-        }
+
+        Oncollect(player);
     }
 
     public virtual void Oncollect(Player mPlayer)
     {
-        Debug.Log($"Collected {itemName}");
+        Debug.Log($"Collected {Name}");
     }
 
     public virtual void OnUse(Player mPlayer)
     {
-        Debug.Log($"Using {itemName}");
+        Debug.Log($"Using {Name}");
     }
 }

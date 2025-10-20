@@ -12,9 +12,12 @@ public class InteractableItem : Items, IHasInteractionUI
     protected override void Start()
     {
         base.Start();
-        _collider.isTrigger = false;
-    }
 
+        // ถ้าอยากใช้โหมด “ยืนใกล้ + กด E” โดยไม่ให้ OnTrigger ทำงาน
+        // ให้คอลลิเดอร์เป็น non-trigger (ตามโค้ดเดิม)
+        if (_collider == null) _collider = GetComponent<Collider>();
+        if (_collider != null) _collider.isTrigger = false;
+    }
 
     private void Awake()
     {
@@ -43,9 +46,7 @@ public class InteractableItem : Items, IHasInteractionUI
                 _interactionTextUI.gameObject.SetActive(true);
 
             if (Input.GetKeyDown(KeyCode.E))
-            {
                 Collect(player);
-            }
         }
         else
         {
@@ -57,14 +58,16 @@ public class InteractableItem : Items, IHasInteractionUI
     private void Collect(Player player)
     {
         canInteract = false;
+
         if (_interactionTextUI != null)
             _interactionTextUI.gameObject.SetActive(false);
 
-        Items itemComponent = GetComponent<Items>();
+        var itemComponent = GetComponent<Items>();
         if (itemComponent != null)
         {
+            // ให้แน่ใจว่า Player.AddItem(Items item) มีซิกเนเจอร์ตรงนี้จริง
             player.AddItem(itemComponent);
-            Debug.Log($"{player.Name} collected {itemName}");
+            Debug.Log($"{player.Name} collected {Name}");
         }
 
         gameObject.SetActive(false);

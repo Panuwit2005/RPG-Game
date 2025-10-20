@@ -16,7 +16,7 @@ public abstract class Stuff : Identity
     public void Update()
     {
         //Logic for Stuff
-        if(GetDistanPlayer() >= 2 || canUse == false)
+        if(GetDistanPlayer() >= 2 || !canUse)
         {
             interactionTextUI.gameObject.SetActive(false);
         }

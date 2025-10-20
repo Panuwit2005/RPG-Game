@@ -4,7 +4,7 @@ using UnityEngine;
 public class MoveAbleEnemyInteractable : MoveAbleEnemy, IInteractable, IHasInteractionUI
 {
     public TMP_Text InteractionTextUI { get; private set; }
-    public bool IsInteractable { get; set; } = true; // สามารถ interact ได้ครั้งเดียว
+    public bool isInteractable { get; set; } = true; // สามารถ interact ได้ครั้งเดียว
     private bool isAttacking = false;
 
     private void Awake()
@@ -20,7 +20,7 @@ public class MoveAbleEnemyInteractable : MoveAbleEnemy, IInteractable, IHasInter
 
         // แสดง interaction text ถ้าใกล้ ≤ 2 หน่วย และยัง interact ได้
         float distance = GetDistanPlayer();
-        if (distance <= 2f && IsInteractable)
+        if (distance <= 2f && isInteractable)
         {
             InteractionTextUI.gameObject.SetActive(true);
         }
@@ -30,7 +30,7 @@ public class MoveAbleEnemyInteractable : MoveAbleEnemy, IInteractable, IHasInter
         }
 
         // ตรวจสอบ input กด E
-        if (distance <= 2f && IsInteractable && Input.GetKeyDown(KeyCode.E))
+        if (distance <= 2f && isInteractable && Input.GetKeyDown(KeyCode.E))
         {
             Interact(Player);
         }
@@ -38,10 +38,10 @@ public class MoveAbleEnemyInteractable : MoveAbleEnemy, IInteractable, IHasInter
 
     public void Interact(Player player)
     {
-        if (!IsInteractable) return;
+        if (!isInteractable) return;
 
         // โต้ตอบครั้งเดียว
-        IsInteractable = false; // ไม่สามารถ interact ซ้ำ
+        isInteractable = false; // ไม่สามารถ interact ซ้ำ
         if (InteractionTextUI != null)
             InteractionTextUI.gameObject.SetActive(false);
 
